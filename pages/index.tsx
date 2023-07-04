@@ -27,7 +27,7 @@ export default function Home() {
             router.events.off('routeChangeStart', handleRouteChange);
             clearTimeout(timeout)
         };
-    }, []);
+    }, [router]);
 
 
     return (

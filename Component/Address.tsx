@@ -50,7 +50,8 @@ const Address : React.FC = () => {
     //this is a function provided in the contextprovider
     const handleUpdateTransaction = useContext(ContextApi).handleUpdateTransaction;
 
-    const onTransSuccess = (data : any) => {
+    const onTransSuccess = (data : any) => { 
+        console.log(data)
         //we check the status of the data
         const status = data?.pages[0].status;
             //if the status is 0, we set the error variable to true, and the errorMessage to the result which contains the error message
