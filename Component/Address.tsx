@@ -1,27 +1,18 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, {useContext, useEffect, useState} from "react";
-import dayjs from 'dayjs';
 import Container from "@mui/material/Container";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Box from "@mui/material/Box";
 import {Stack} from "@mui/system";
 import Typography from "@mui/material/Typography";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {Button, CircularProgress, FormHelperText, TextField, useMediaQuery} from "@mui/material";
-import {IAddress, IBalance, ITrans, ITransTable, TransResult} from "@/types/types";
-import {
-    useFetchEthBalance,
-    useFetchExchangeRate,
-    useInfiniteScroll
-} from "@/Hooks/useDataFetch";
+import {Button, CircularProgress, TextField, useMediaQuery} from "@mui/material";
+import {IAddress, TransResult} from "@/types/types";
+import {useInfiniteFetch } from "@/Hooks/useDataFetch";
 import TransactionTable from "@/Component/utils/TransactionTable";
-import BalanceCard from "@/Component/utils/BalanceCard";
 import ContextApi from "@/Store/ContextApi";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import {scrollToBottom, scrollToPercentage} from "@/helpers/utils";
+//define scheme for yup, which handles form validation
 const schema = yup.object().shape({
     address: yup.string().required(),
     contract: yup.string(),
@@ -50,30 +41,27 @@ const Address : React.FC = () => {
             },
         });
     const isMobile : boolean = useMediaQuery('(max-width: 740px)')
-
-
+    //this variable contains all the transactions returned from the api 
     const transactions = useContext(ContextApi).transactions
+    //this variable holds whether there is an error or not
     const [isError, setIsError] = useState<boolean>(false);
-
+    //state for managing error message if any
     const [errorMessage, setErrorMessage] = useState<string>('')
+    //this is a function provided in the contextprovider
     const handleUpdateTransaction = useContext(ContextApi).handleUpdateTransaction;
+
     const onTransSuccess = (data : any) => {
-
+        //we check the status of the data
         const status = data?.pages[0].status;
-
+            //if the status is 0, we set the error variable to true, and the errorMessage to the result which contains the error message
         if (Number(status) === 0) {
             setIsError(true)
             setErrorMessage(data?.pages[0].result)
             return
         }
         const tableData = data?.pages.flatMap((page : TransResult) => page.result) ?? [];
-        // const placeholder = transactions;
-        // placeholder.push(tableData)
        const length = tableData.length
-        console.log(tableData)
         const newTable = tableData.slice(length-10, length)
-        console.log(newTable)
-
         handleUpdateTransaction(newTable, false)
         reset()
         if (isFirst){
@@ -83,13 +71,21 @@ const Address : React.FC = () => {
             },50)
         }
     }
-    // dont forget error handling
+        //this is a function provided in the contextprovider
+
     const handleAddressContract = useContext(ContextApi).handleAddressContract;
+        //this is a function provided in the contextprovider
     const handleUpdatePage = useContext(ContextApi).handleUpdatePage;
-   const { isLoading,isFetching,fetchNextPage,fetchPreviousPage, isFetched, hasPreviousPage, isFetchingPreviousPage, refetch, hasNextPage, isFetchingNextPage} =   useInfiniteScroll(onTransSuccess, addressData)
-    const onSubmit : SubmitHandler<IAddress> = async (data) => {
+    //the below is a hook provided by react-query which handles server-side data, we pass a function called onTranSuccess, which will 
+    //execute if the request was successful, also the addressData, which contains the data the user submitted
+   const { isLoading,isFetching,fetchNextPage,fetchPreviousPage, hasPreviousPage, 
+    isFetchingPreviousPage, refetch, hasNextPage, isFetchingNextPage} =   useInfiniteFetch(onTransSuccess, addressData)
+   //these function is the submit handler
+   const onSubmit : SubmitHandler<IAddress> = async (data) => {
+        // we get all the field which was submitted
         const {address,startBlock,endBlock, contract} = data;
         handleUpdateTransaction([], true)
+        //we set the error to false
         setIsError(false)
         const newData = {
                 address,
@@ -99,6 +95,7 @@ const Address : React.FC = () => {
             }
 
             handleUpdatePage(0)
+            //we set the addressData with the newly submitted data by the user
             setAddressDate(newData)
         handleAddressContract(address, contract)
         setTimeout(() => {
@@ -209,6 +206,4 @@ const Address : React.FC = () => {
             </Container>
         )
 }
-
-
 export default Address;

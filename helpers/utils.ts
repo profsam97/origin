@@ -1,11 +1,14 @@
 import {IRound} from "@/types/types";
 
+// this function helps to truncate words
 export function truncate (word: string, len: number) {
     if (word?.length > len)
         return word?.substring(0, len) + '...';
     else
         return word;
 }
+
+// convert timestamp to data
 export function convertTimestampToTimeAgo(timestamp: number): string {
     const currentTimestamp = Math.floor(Date.now() / 1000); // Get the current timestamp in seconds
     const timeDifference = currentTimestamp - timestamp; // Calculate the time difference in seconds
@@ -36,12 +39,15 @@ export const convertDateFormat = (dateString: string): string =>  {
 
     return convertedDate;
 }
+
+//convert date to timestamp
 export const convertDateToTimestamp = (dateString : string)  => {
     const timestamp = Date.parse(dateString) / 1000;
     return timestamp;
 }
 
 
+//round up to the desired number provided
 export const round = (number: number): any => {
     const formattedNumber = new Intl.NumberFormat('en-US', {  maximumFractionDigits: 18}).format(number);
 
@@ -49,6 +55,7 @@ export const round = (number: number): any => {
 };
 
 
+// a function to calculate transaction fee
 export const  calculateTransactionFee = (gas: string, gasPrice: string): string => {
     const gasPriceWei = BigInt(gasPrice);
     const gasUsed = BigInt(gas);
@@ -59,12 +66,8 @@ export const  calculateTransactionFee = (gas: string, gasPrice: string): string 
     return transactionFeeEther.toFixed(7);
 
 }
-export const convertToEth = (value: string) : string => {
-    const wei = BigInt(value);
-    const eth = Number(wei) / 1e18;
-    return eth.toFixed(18).replace(/\.?0+$/, '');
 
-}
+// convert wei to eth
 export const  convertWeiToEther = (wei: number): string => {
     const decimalFactor = BigInt('1000000000000000000'); // Decimal factor for 18 decimal places
     const valueWei = BigInt(wei);
@@ -74,6 +77,7 @@ export const  convertWeiToEther = (wei: number): string => {
     return truncatedValue.toString();
 }
 
+// convert token value
 export const convertTokenValue = (value: number, decimalPlace: string) : string => {
     const decimalFactor = BigInt(`10${'0'.repeat(Number(decimalPlace))}`); // Decimal factor for the token
     const valueToken = BigInt(value);
@@ -83,6 +87,8 @@ export const convertTokenValue = (value: number, decimalPlace: string) : string 
     return truncatedValue.toString();
 }
 
+
+// get gas price in eth, the gaspricewei argument is in wei
 export const getGasPrice = (gasPriceWei: string) : string => {
     const weiPerEth = 1000000000000000000; // 1 ETH = 10^18 Wei
     const gasPriceEth = parseInt(gasPriceWei, 16) / weiPerEth;
@@ -98,6 +104,7 @@ export const getGasPriceToGwei = (gasPriceWei: string) : string => {
 }
 
 
+// helps to scroll to the bottom of the page, when the user fetches the eth balance 
 export  const scrollToBottom = () => {
     window.scrollTo({
         top: document.documentElement.scrollHeight,

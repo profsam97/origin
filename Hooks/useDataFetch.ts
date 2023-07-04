@@ -10,22 +10,28 @@ import ContextApi from "@/Store/ContextApi";
 const API_URL = 'https://eth-mainnet.g.alchemy.com/v2/Mgq9vjmhi9Y09Zpr8KVXiktN9UIYzZAO';
 const apikey = 'Mgq9vjmhi9Y09Zpr8KVXiktN9UIYzZAO'
 const apiKey = process.env.NEXT_PUBLIC_API_KEY
-export function useInfiniteScroll(onSuccess : any, data: IAddress) {
+
+// this function is reponsible for fetching the transactions of the provided address
+export function useInfiniteFetch(onSuccess : any, data: IAddress) {
     const {startBlock, endBlock} = data;
     const address = useContext(ContextApi).address;
     const contract = useContext(ContextApi).contract;
+
+    // the current page the user is view, initially it is set to 0.
     const page = useContext(ContextApi).currentPage
+
+    //the number of data fetch per page
     const  limit : number = 10;
     const fetchTransactions = async (currentpage : number) => {
         currentpage = page + 1;
-        console.log(currentpage)
+        // endpoint for fetching ethereum trans
         const ethTrans : string = `${baseUrl}module=account&action=txlist&address=${address}&startblock=${startBlock}&endblock=${endBlock}&page=${currentpage}&offset=${limit}&sort=desc&apikey=${apiKey}`;
         const otherTrans : string = `${baseUrl}module=account&action=tokentx&contractaddress=${contract}&address=${address}&page=${currentpage}&offset=${limit}&startblock=${startBlock}&endblock=${endBlock}&sort=desc&apikey=${apiKey}`;
+        // if the contract is provided, it means we fetch the other trans else we fetch ether trans
         const url  : string = contract === '' ? ethTrans : otherTrans
 
         const response = await axios.get(`${url}`);
         return response.data;
-
     }
 
     return useInfiniteQuery(['transactions'],
@@ -37,11 +43,14 @@ export function useInfiniteScroll(onSuccess : any, data: IAddress) {
             },
             getPreviousPageParam: (firstPage) => firstPage.previousPage,
             onSuccess,
+            // initially, we disable the request, since we dont yet have the data provided by the user
             enabled: false
         }
     )
 }
 
+
+// this function is responsible for fetching  the exchange rate for ethereum 
 export const useFetchExchangeRate = (onSuccess: any) => {
 
     const handleFetchExchangeRate = async () => {
@@ -53,11 +62,16 @@ export const useFetchExchangeRate = (onSuccess: any) => {
     }
     return useQuery('fetchExchangeRate', handleFetchExchangeRate, {onSuccess})
 }
+
+
+//function for fetching eth balance 
 export const useFetchEthBalance =   (onSuccess: any, onError : any) => {
         const handleFetchBalance = async (postData : IBalance) => {
+            //we get the address and date from the data
             const {address, date} = postData
             const convertedDate = convertDateFormat(date);
             try {
+                // we convert the date to timestamp
                 const timestamp = convertDateToTimestamp(convertedDate)
                 const fetchBlock = await axios.get(`${baseUrl}module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${apiKey}`);
                const blockNo = fetchBlock.data.result

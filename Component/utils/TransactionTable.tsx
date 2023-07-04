@@ -33,19 +33,22 @@ const PaginationContainer = styled('div')(({ theme }) => ({
 const PaginationText = styled('span')({
     marginRight: '16px',
     margin: '1px',
-    color: '#333', // Customize the color here
+    color: '#333', 
 });
 
-const TransactionTable: React.FC<ITransTable> = ({ isFetching, isFetchingPreviousPage, fetchPreviousPage, hasPreviousPage, trans,hasNextPage,isFetchingNextPage,fetchNextPage }) => {
-
+const TransactionTable: React.FC<ITransTable> = ({ isFetching, isFetchingPreviousPage, trans,hasNextPage,isFetchingNextPage,fetchNextPage }) => {
+    //no of rows to be fetched per page
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
 
     const page = useContext(ContextApi).page;
     const handleUpdatePage = useContext(ContextApi).handleUpdatePage;
     const handleCurrentPage = useContext(ContextApi).handleCurrentPage;
     const handlePageChange = (_ : React.MouseEvent<HTMLButtonElement> | null, newPage : number) => {
         handleCurrentPage(newPage)
+        //we check if the newpage is greater than the current page
         if (newPage > page) {
+            //if it is, fetch the next page
             setTimeout(() => {
                 fetchNextPage(newPage);
             },10)
@@ -53,6 +56,7 @@ const TransactionTable: React.FC<ITransTable> = ({ isFetching, isFetchingPreviou
                 handleUpdatePage(newPage);
             },800)
         } else {
+            //if not update the pagenumber
             // fetchPreviousPage(newPage);
             handleUpdatePage(newPage);
         }

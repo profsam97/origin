@@ -1,14 +1,11 @@
 import React, {useState} from "react";
 import ContextApi from "@/Store/ContextApi";
-import {ITrans, TransResult} from "@/types/types";
-import {number} from "yup";
-import {compileNonPath} from "next/dist/shared/lib/router/utils/prepare-destination";
-
+import {ITrans} from "@/types/types";
 interface IProvider {
     children: React.ReactNode
 }
 const ContextProvider  : React.FC<IProvider>= ({children}) => {
-
+    //this component makes our state global, that is accessible component-wide
     const [contract, setContract] = useState<string>('')
     const [address, setAddress] = useState<string>('')
     const [rate, setRate] = useState<number>(1911);
@@ -20,7 +17,10 @@ const ContextProvider  : React.FC<IProvider>= ({children}) => {
         setAmount(amount)
     }
 
-
+    //this function updates the transaction state, expect 2 argument, 
+    // newtable contains the transaction data, which will be added to the prev trans data if any, 
+    // the empty boolean indicate whether the trans data should be reseted, this is used when the user clicks on the search button
+    //so the previous trans  will be deleted, since we are fetching for a new address 
     const handleUpdateTransaction = (newTable: ITrans[], empty: boolean) => {
         if (empty) {
             setTransaction([])
@@ -29,6 +29,7 @@ const ContextProvider  : React.FC<IProvider>= ({children}) => {
 
         setTransaction(prevState => [...prevState, ...newTable])
     }
+    // this allows use to track the current table page the user is on, useful when fetch data from the api endpoint
     const handleUpdatePage = (page : number) => {
         setPage(page)
     }
@@ -36,6 +37,7 @@ const ContextProvider  : React.FC<IProvider>= ({children}) => {
         setAddress(address)
         setContract(contract)
     }
+    // this update the rate of eth to dollars
     const updateRate = (rate : number) => {
         setRate(rate)
     }

@@ -15,7 +15,7 @@ interface Input {
     disabled: boolean
 }
 const TextInput : React.JSXElementConstructor<any> = ({disabled, id, field, type, variant, data, multiple, required}: Input) => {
-
+        // custom component to manage form field
     return (
         <>
             <TextField
