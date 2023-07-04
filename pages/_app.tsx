@@ -4,6 +4,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import ContextProvider from "@/Store/ContextProvider";
+import React from "react";
+import "nprogress/nprogress.css";
+import NProgress from "nprogress";
+import Router from "next/router";
+
 
 export default function App({ Component, pageProps }: AppProps) {
   //this allows us to define our custom theme e.g. typography, variants e.t.c
@@ -26,14 +31,28 @@ export default function App({ Component, pageProps }: AppProps) {
   });
   const client = new QueryClient()
 
+    React.useEffect(() => {
+        const handleRouteStart = () => NProgress.start();
+        const handleRouteDone = () => NProgress.done();
+        //add the event handler on mount
+        Router.events.on("routeChangeStart", handleRouteStart);
+        Router.events.on("routeChangeComplete", handleRouteDone);
+        Router.events.on("routeChangeError", handleRouteDone);
+        return () => {
+            // remove the event handler on unmount!
+            Router.events.off("routeChangeStart", handleRouteStart);
+            Router.events.off("routeChangeComplete", handleRouteDone);
+            Router.events.off("routeChangeError", handleRouteDone);
+        };
+    }, []);
   return (
+      <ContextProvider>
       <QueryClientProvider client={client}>
-          <ContextProvider>
       <ThemeProvider theme={customTheme} >
       <Component {...pageProps} />
       </ThemeProvider>
         <ReactQueryDevtools position={'bottom-right'} initialIsOpen={false} />
-          </ContextProvider>
       </QueryClientProvider>
+      </ContextProvider>
   )
 }

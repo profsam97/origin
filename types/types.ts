@@ -40,7 +40,7 @@ export interface TransResult  {
     message: string
 }
 export interface ITransTable {
-    trans: ITrans[][],
+    trans: ITrans[],
     isFetching: boolean,
     hasNextPage: boolean | undefined,
     isFetchingNextPage: boolean,

@@ -16,6 +16,14 @@ const ContextApi =  React.createContext({
     rate: 1983,
     updateRate: (rate: number) => {},
     transactions: [ITrans],
+    address: '',
+    contract: '',
+    currentPage: 0,
+    handleCurrentPage: (page: number) => {},
+    handleAddressContract: (address : string, contract: string) => {},
+    handleUpdatePage: (page: number) => {},
+    handleUpdateTransaction: (newData : ITrans[], empty: boolean) => {},
+    page: 0,
     amount: null,
     handleUpdateBalance: (amount: number | null) => {}
 })

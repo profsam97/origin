@@ -51,12 +51,12 @@ const Address : React.FC = () => {
         });
     const isMobile : boolean = useMediaQuery('(max-width: 740px)')
 
-    const [transactions, setTransaction] = useState<ITrans[][]>([])
 
+    const transactions = useContext(ContextApi).transactions
     const [isError, setIsError] = useState<boolean>(false);
 
     const [errorMessage, setErrorMessage] = useState<string>('')
-
+    const handleUpdateTransaction = useContext(ContextApi).handleUpdateTransaction;
     const onTransSuccess = (data : any) => {
 
         const status = data?.pages[0].status;
@@ -67,9 +67,14 @@ const Address : React.FC = () => {
             return
         }
         const tableData = data?.pages.flatMap((page : TransResult) => page.result) ?? [];
-        const placeholder = transactions;
-        placeholder.push(tableData)
-        setTransaction(placeholder)
+        // const placeholder = transactions;
+        // placeholder.push(tableData)
+       const length = tableData.length
+        console.log(tableData)
+        const newTable = tableData.slice(length-10, length)
+        console.log(newTable)
+
+        handleUpdateTransaction(newTable, false)
         reset()
         if (isFirst){
             isFirst = false
@@ -79,11 +84,12 @@ const Address : React.FC = () => {
         }
     }
     // dont forget error handling
-
+    const handleAddressContract = useContext(ContextApi).handleAddressContract;
+    const handleUpdatePage = useContext(ContextApi).handleUpdatePage;
    const { isLoading,isFetching,fetchNextPage,fetchPreviousPage, isFetched, hasPreviousPage, isFetchingPreviousPage, refetch, hasNextPage, isFetchingNextPage} =   useInfiniteScroll(onTransSuccess, addressData)
     const onSubmit : SubmitHandler<IAddress> = async (data) => {
         const {address,startBlock,endBlock, contract} = data;
-        setTransaction([])
+        handleUpdateTransaction([], true)
         setIsError(false)
         const newData = {
                 address,
@@ -91,8 +97,10 @@ const Address : React.FC = () => {
                 endBlock,
                 contract
             }
-            setAddressDate(newData)
 
+            handleUpdatePage(0)
+            setAddressDate(newData)
+        handleAddressContract(address, contract)
         setTimeout(() => {
             refetch()
         }, 100)
