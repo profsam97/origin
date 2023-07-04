@@ -14,9 +14,11 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY
 // this function is reponsible for fetching the transactions of the provided address
 export function useInfiniteFetch(onSuccess : any, data: IAddress) {
     const {startBlock, endBlock} = data;
-    const address = useContext(ContextApi).address;
-    const contract = useContext(ContextApi).contract;
-
+    let address = useContext(ContextApi).address;
+    let contract = useContext(ContextApi).contract;
+    //trim the address and contract of trailing space
+    address = address.trim()
+    contract = contract.trim()
     // the current page the user is view, initially it is set to 0.
     const page = useContext(ContextApi).currentPage
 
@@ -68,7 +70,8 @@ export const useFetchExchangeRate = (onSuccess: any) => {
 export const useFetchEthBalance =   (onSuccess: any, onError : any) => {
         const handleFetchBalance = async (postData : IBalance) => {
             //we get the address and date from the data
-            const {address, date} = postData
+            let {address, date} = postData
+            address = address.trim()
             const convertedDate = convertDateFormat(date);
             try {
                 // we convert the date to timestamp

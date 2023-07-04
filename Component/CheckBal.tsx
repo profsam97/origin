@@ -15,15 +15,17 @@ import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import Button from "@mui/material/Button";
 import BalanceCard from "@/Component/utils/BalanceCard";
-import {scrollToBottom, scrollToPercentage} from "@/helpers/utils";
+import {scrollToBottom} from "@/helpers/utils";
 
+
+//schema for yup validation
 const schema = yup.object().shape({
     address: yup.string().required(),
     date:  yup.string().required(),
 });
 const CheckBal : React.FC = () => {
 
-
+    //use react form hook to handle the form
     const { handleSubmit: handleSubmitBal, formState: {errors}, control : controlBal, reset: resetBal } =
         useForm<IBalance>({
             resolver: yupResolver(schema),
@@ -61,7 +63,7 @@ const CheckBal : React.FC = () => {
         setErrorMessage('something went wrong')
     }
 
-    const {isSuccess, isLoading: isBalLoading, mutate: postAddDate} = useFetchEthBalance(onBalSuccess, onError)
+    const {isLoading: isBalLoading, mutate: postAddDate} = useFetchEthBalance(onBalSuccess, onError)
 
 
     const onBalSubmit : SubmitHandler<IBalance> = async (data) => {
