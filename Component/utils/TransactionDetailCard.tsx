@@ -49,21 +49,41 @@ const TransactionDetailsCard : React.FC<Transaction> = ({data}) => {
             <CardContent sx={{ mr: 2 }}>
                 <Stack spacing={1.5} sx={{color: '#7e8ea2'}}>
                 <Typography  variant="subtitle2">Transaction Hash:</Typography>
-                    {isMobile &&   <Typography variant="body2">0x84b4ee4410bc3300db0f39d26d4a33ed1b8dc8f6395c04016d76f4ff39a88f85</Typography>}
+                    {isMobile &&   <Typography variant="body2">{truncate(hash, 40)}</Typography>}
                 <Typography  variant="subtitle2">Status:</Typography>
-                    {isMobile &&    <Typography variant="body2">Success</Typography>}
+                    {isMobile && blockNumber &&  <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            border="1px solid #00a186"
+                            borderRadius="6px"
+                            padding="4px"
+                            maxWidth="80px"
+                            maxHeight={'25px'}
+                            fontWeight="bold"
+                            color="#00a186"
+                        >
+                            <Stack direction={'row'} spacing={0.4}>
+                                <CheckCircleIcon fontSize="small" htmlColor="#00a186"  sx={{fontSize: 14, mt:0.4}}/>
+                                <Typography variant={'caption'}> Success</Typography>
+                            </Stack>
+                        </Box>
+                    }
+                    {isMobile && !blockNumber &&
+                        <Typography variant={'body2'}>(Pending)</Typography>
+                    }
                 <Typography variant="subtitle2">Block:</Typography>
-                    {isMobile &&        <Typography variant="body2">17453419</Typography>}
+                    {isMobile &&        <Typography variant="body2">{blockNumber ? blockNumber : '(Pending)'}</Typography>}
                 <Typography variant="subtitle2">From:</Typography>
-                    {isMobile &&      <Typography  variant="body2">0x9204AAB44A4B8ECae2340907A16f038DBaa7EbcE</Typography>}
+                    {isMobile &&      <Typography  variant="body2">{from}</Typography>}
                 <Typography variant="subtitle2">To:</Typography>
-                    {isMobile &&    <Typography variant="body2">0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe (EthDev)</Typography>}
+                    {isMobile &&    <Typography variant="body2">{to} </Typography>}
                 <Typography  variant="subtitle2">Value:</Typography>
-                    {isMobile &&     <Typography variant="body2">0.000052012 ETH </Typography>}
+                    {isMobile &&     <Typography variant="body2">{convertToEth(value)} ETH </Typography>}
                 <Typography  variant="subtitle2">Transaction Fee:</Typography>
-                    {isMobile &&      <Typography variant="body2">0.00037299860534552 ETH</Typography>}
+                    {isMobile &&      <Typography variant="body2">{calculateTransactionFee(gas, gasPrice) } ETH</Typography>}
                 <Typography  variant="subtitle2">Gas Price:</Typography>
-                    {isMobile &&      <Typography variant="body2">16.58951278 Gwei (0.00000001658951278 ETH)</Typography>}
+                    {isMobile &&      <Typography variant="body2">{getGasPriceToGwei(gasPrice) } Gwei ({getGasPrice(gasPrice)} ETH)</Typography>}
                 </Stack>
             </CardContent>
             {!isMobile && <CardContent>

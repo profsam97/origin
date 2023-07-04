@@ -114,3 +114,15 @@ input, select {
   color: #fff;
 }
 
+
+#nprogress .bar {
+  background: #111A2E !important;
+  padding: 0 10px !important;
+  height: 6px !important;
+  z-index: 999999 !important;
+}
+
+#nprogress .spinner .spinner-icon {
+  border-top-color: #111A2E !important;
+  border-left-color: #111A2E !important;
+}

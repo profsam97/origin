@@ -23,7 +23,6 @@ const BalanceCard : React.FC<IEtheruemBal> = ({amount}) => {
                             </Typography>
                             <EthCard title={'ETH BALANCE'} dollar={false} amount={ amount} />
                             <EthCard title={'ETH VALUE'} dollar={true} amount={ amount} />
-                            <EthCard title={'TOKEN HOLDINGS'} dollar={true} amount={ 444434.23232} />
                         </Box>
                     </Card>
         )

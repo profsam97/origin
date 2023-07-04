@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -21,6 +21,7 @@ import {TablePagination} from "@mui/base";
 import IconButton from "@mui/material/IconButton";
 import {CircularProgress} from "@mui/material";
 import Typography from "@mui/material/Typography";
+import ContextApi from "@/Store/ContextApi";
 
 const PaginationContainer = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -38,19 +39,22 @@ const PaginationText = styled('span')({
 const TransactionTable: React.FC<ITransTable> = ({ isFetching, isFetchingPreviousPage, fetchPreviousPage, hasPreviousPage, trans,hasNextPage,isFetchingNextPage,fetchNextPage }) => {
 
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [page, setPage] = React.useState(0);
 
-
+    const page = useContext(ContextApi).page;
+    const handleUpdatePage = useContext(ContextApi).handleUpdatePage;
+    const handleCurrentPage = useContext(ContextApi).handleCurrentPage;
     const handlePageChange = (_ : React.MouseEvent<HTMLButtonElement> | null, newPage : number) => {
+        handleCurrentPage(newPage)
         if (newPage > page) {
-
-            fetchNextPage(newPage);
             setTimeout(() => {
-                setPage(newPage);
+                fetchNextPage(newPage);
+            },10)
+            setTimeout(() => {
+                handleUpdatePage(newPage);
             },800)
         } else {
-            fetchPreviousPage(newPage);
-            setPage(newPage);
+            // fetchPreviousPage(newPage);
+            handleUpdatePage(newPage);
         }
 
     };
@@ -101,7 +105,7 @@ const TransactionTable: React.FC<ITransTable> = ({ isFetching, isFetchingPreviou
                         </TableRow>
                     </TableHead>
                     <TableBody sx={{color: '#fff'}}>
-                        { trans[trans.length - 1].slice(
+                        { trans.slice(
                             page * rowsPerPage,
                             page * rowsPerPage + rowsPerPage
                         ).map(({from,tokenDecimal, tokenSymbol, value,gasPrice, gas, timeStamp,blockNumber, hash,to} , index) => (
@@ -140,7 +144,7 @@ const TransactionTable: React.FC<ITransTable> = ({ isFetching, isFetchingPreviou
                 </IconButton>
                 <IconButton
                     onClick={() => handlePageChange(null, page + 1)}
-                    disabled={!hasNextPage || isFetchingNextPage}
+                    disabled={isFetchingNextPage}
                     aria-label="Next Page"
                 >
                     <ChevronRight />
