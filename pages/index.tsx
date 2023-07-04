@@ -1,10 +1,7 @@
 import Head from 'next/head'
-import Nav from "@/Component/Layout/Nav";
 import Hero from "@/Component/Hero";
 import Address from "@/Component/Address";
-
 import CheckBal from "@/Component/CheckBal";
-import TransactionDetailsCard from "@/Component/utils/TransactionDetailCard";
 import Header from "@/Component/utils/Header";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
@@ -12,6 +9,7 @@ import {useEffect} from "react";
 
 export default function Home() {
     const router = useRouter()
+    // this here is reponsible for restoring the user's scroll position
     useEffect(() => {
         const handleRouteChange = () => {
             localStorage.setItem('scrollPosition', window.scrollY.toString());
@@ -24,9 +22,7 @@ export default function Home() {
             if (storedScrollPosition) {
                 window.scrollTo(0, parseInt(storedScrollPosition));
             }
-        },500)
-
-
+        },100)
         return () => {
             router.events.off('routeChangeStart', handleRouteChange);
             clearTimeout(timeout)

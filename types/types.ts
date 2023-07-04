@@ -71,7 +71,7 @@ export interface IGetTransByHash {
     gasPrice: string,
     maxFeePerGas: string,
     hash: string,
-    value: string
+    value: number
 }
 
 export interface IHeader {

@@ -33,8 +33,11 @@ const CheckBal : React.FC = () => {
                 date: '',
             },
         });
-    const [isError, setIsError] = useState<boolean>(false);
 
+
+            //this variable holds whether there is an error or not
+    const [isError, setIsError] = useState<boolean>(false);
+            //state for managing error message if any
     const [errorMessage, setErrorMessage] = useState<string>('')
     const handleUpdateBalance = useContext(ContextApi).handleUpdateBalance;
     const balance = useContext(ContextApi).amount
@@ -46,7 +49,9 @@ const CheckBal : React.FC = () => {
               return
           }
         handleUpdateBalance(data)
+        // if everything goes well we reset the input field
         resetBal()
+        // scroll down after the data has been fetch
        setTimeout(() => {
            scrollToBottom()
        },20)
@@ -160,9 +165,10 @@ const CheckBal : React.FC = () => {
                 </Stack>
                 <Stack my={3}>
                 {isBalLoading &&  <Typography textAlign={'center'}>  <CircularProgress/></Typography>}
+                {/* {if the balance was fetched successfully we display it} */}
                 {balance  && <BalanceCard amount={balance} />}
+                {/* id there is an error we display the message over here*/}
                     {isError && !balance && <Typography textAlign={'center'}  sx={{color: 'red'}} variant={'subtitle2'}>{errorMessage} </Typography>}
-
                 </Stack>
                 </Container>
         )

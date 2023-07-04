@@ -14,6 +14,7 @@ const ViewTransaction : React.FC<Transaction> = ({data}) => {
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+    //get the transaction hash from the url
     const transactionHash: string | undefined | any = context.params?.slug;
     try {
         const response = await axios.get(`${baseUrl}module=proxy&action=eth_getTransactionByHash&txhash=${transactionHash}&apikey=${apiKey}`);
@@ -25,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     }
     catch (e) {
+        //if there is an error we redirect to the homepage.
         return  {
             redirect: {
                 destination: '/',

@@ -4,17 +4,9 @@ import Container from "@mui/material/Container";
 import {Stack, useTheme} from "@mui/system";
 import Box from "@mui/material/Box";
 import {IGetTransByHash, ITransaction} from "@/types/types";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import Link from "next/link";
 import {
     calculateTransactionFee,
-    convertTimestampToTimeAgo, convertToEth,
-    convertTokenValue,
     convertWeiToEther, getGasPrice, getGasPriceToGwei,
     truncate
 } from "@/helpers/utils";
@@ -79,7 +71,7 @@ const TransactionDetailsCard : React.FC<Transaction> = ({data}) => {
                 <Typography variant="subtitle2">To:</Typography>
                     {isMobile &&    <Typography variant="body2">{to} </Typography>}
                 <Typography  variant="subtitle2">Value:</Typography>
-                    {isMobile &&     <Typography variant="body2">{convertToEth(value)} ETH </Typography>}
+                    {isMobile &&     <Typography variant="body2">{convertWeiToEther(value)} ETH </Typography>}
                 <Typography  variant="subtitle2">Transaction Fee:</Typography>
                     {isMobile &&      <Typography variant="body2">{calculateTransactionFee(gas, gasPrice) } ETH</Typography>}
                 <Typography  variant="subtitle2">Gas Price:</Typography>
@@ -114,7 +106,7 @@ const TransactionDetailsCard : React.FC<Transaction> = ({data}) => {
                 <Typography variant="body2">{blockNumber ? blockNumber : '(Pending)'}</Typography>
                 <Typography variant="body2">{from}</Typography>
                 <Typography variant="body2">{to} </Typography>
-                <Typography variant="body2">{convertToEth(value)} ETH </Typography>
+                <Typography variant="body2">{convertWeiToEther(value)} ETH </Typography>
                 <Typography variant="body2">{calculateTransactionFee(gas, gasPrice) } ETH</Typography>
                 <Typography variant="body2">  {getGasPriceToGwei(gasPrice) } Gwei ({getGasPrice(gasPrice)} ETH)</Typography>
                 </Stack>

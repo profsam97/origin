@@ -10,6 +10,7 @@ interface IEtheruemBal {
     amount: number
 }
 const BalanceCard : React.FC<IEtheruemBal> = ({amount}) => {
+        //the eth bal card component 
         return (
                     <Card sx={{bgcolor: '#162138', maxWidth: 350, my:2, borderRadius: '8px'}}>
                         <Box sx={{

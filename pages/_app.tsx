@@ -11,7 +11,7 @@ import Router from "next/router";
 
 
 export default function App({ Component, pageProps }: AppProps) {
-  //this allows us to define our custom theme e.g. typography, variants e.t.c
+  //this allows us to define our custom theme e.g. typography, component e.t.c
   const customTheme = createTheme({
     typography: {
       fontFamily: "Quicksand",
@@ -20,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
       fontWeightRegular: 500,
       fontWeightMedium: 600,
     },
+    // customized the size of the circular progress component to make it smaller
       components: {
         MuiCircularProgress: {
             defaultProps: {
@@ -30,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
       
   });
   const client = new QueryClient()
-
+    //this displays a loading bar when routing
     React.useEffect(() => {
         const handleRouteStart = () => NProgress.start();
         const handleRouteDone = () => NProgress.done();

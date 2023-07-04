@@ -12,6 +12,7 @@ const ITrans = {
     value: 0,
     tokenDecimal: ''
 }
+//setting the default values makes it easy for our ide to suggest autocomplete and also for type checking
 const ContextApi =  React.createContext({
     rate: 1983,
     updateRate: (rate: number) => {},
