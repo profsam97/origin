@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Card, CardContent, Typography, useMediaQuery} from '@mui/material';
+import {Card, CardContent, CircularProgress, Typography, useMediaQuery} from '@mui/material';
 import Container from "@mui/material/Container";
 import {Stack, useTheme} from "@mui/system";
 import Box from "@mui/material/Box";
@@ -17,10 +17,12 @@ import {ArrowBack} from "@mui/icons-material";
 import {useRouter} from "next/router";
 import ContextApi from "@/Store/ContextApi";
 type Transaction = {
-    data : IGetTransByHash
+    data : IGetTransByHash,
+    isLoading: boolean,
+    isSuccess: boolean
 }
 
-const TransactionDetailsCard : React.FC<Transaction> = ({data}) => {
+const TransactionDetailsCard : React.FC<Transaction> = ({data, isSuccess, isLoading}) => {
     const {from,gas,gasPrice,maxFeePerGas,to,hash,blockNumber,value} = data;
     const theme = useTheme();
     const router = useRouter()
@@ -36,7 +38,9 @@ const TransactionDetailsCard : React.FC<Transaction> = ({data}) => {
                <ArrowBack onClick={handleUpdateUrl} sx={{cursor: 'pointer'}}/>
                <Typography variant={'body1'}>Go back</Typography>
            </Stack>
-        <Card sx={{bgcolor: '#111A2E', borderRadius: '10px', my:6 }}>
+            {isLoading && <Typography textAlign={'center'} variant={'body1'}><CircularProgress/></Typography>}
+            {isSuccess &&
+            <Card sx={{bgcolor: '#111A2E', borderRadius: '10px', my:6 }}>
             <Box sx={{maxWidth: 800, display: 'flex', justifyContent: 'space-between'}}>
             <CardContent sx={{ mr: 2 }}>
                 <Stack spacing={1.5} sx={{color: '#7e8ea2'}}>
@@ -114,61 +118,7 @@ const TransactionDetailsCard : React.FC<Transaction> = ({data}) => {
             }
             </Box>
         </Card>
-            {/*<Table stickyHeader  sx={{ minWidth: 550 }} size={"medium"} aria-label="stats table">*/}
-            {/*    <TableHead>*/}
-            {/*        <TableRow  sx={{bgcolor: '#111A2E'}}>*/}
-            {/*            <TableCell> Transaction Hash</TableCell>*/}
-            {/*            <TableCell align="left">*/}
-            {/*                Status*/}
-            {/*            </TableCell>*/}
-
-            {/*            <TableCell align="left" sx={{minWidth: 140}}>*/}
-            {/*                Block*/}
-            {/*            </TableCell>*/}
-            {/*            <TableCell align="left">*/}
-            {/*                From*/}
-            {/*            </TableCell>*/}
-            {/*            <TableCell align="left">*/}
-            {/*                To*/}
-            {/*            </TableCell>*/}
-            {/*            <TableCell align="left">*/}
-            {/*                Value*/}
-            {/*            </TableCell>*/}
-            {/*            <TableCell align="left">*/}
-            {/*                Transaction Fee*/}
-            {/*            </TableCell>*/}
-            {/*            <TableCell align="left">*/}
-            {/*                Gas Price*/}
-            {/*            </TableCell>*/}
-            {/*        </TableRow>*/}
-            {/*    </TableHead>*/}
-            {/*    <TableBody sx={{color: '#fff'}}>*/}
-            {/*            <TableRow*/}
-            {/*                sx={{"&:last-child td, &:last-child th": {border: 0}, color: '#fff'}}*/}
-            {/*            >*/}
-            {/*                <TableCell component="th" scope="row">*/}
-            {/*                    <Button*/}
-            {/*                        variant="outlined"*/}
-            {/*                        color="success"*/}
-            {/*                        startIcon={<CheckCircleOutlineIcon />}*/}
-            {/*                        disabled*/}
-            {/*                        size="small"*/}
-            {/*                    >*/}
-            {/*                        Success*/}
-            {/*                    </Button>*/}
-            {/*                </TableCell>*/}
-            {/*                <TableCell component="th" scope="row">*/}
-            {/*                        xxxxx*/}
-            {/*                </TableCell>*/}
-            {/*                <TableCell align="left">xxxx </TableCell>*/}
-            {/*                <TableCell align="left">xxxx    </TableCell>*/}
-            {/*                <TableCell align="left">xxxx </TableCell>*/}
-            {/*                <TableCell align="left">xxxxxxx </TableCell>*/}
-            {/*                <TableCell align="left">xxx</TableCell>*/}
-            {/*                <TableCell align="left">xxxx</TableCell>*/}
-            {/*            </TableRow>*/}
-            {/*    </TableBody>*/}
-            {/*</Table>*/}
+            }
         </Container>
 </>
 
