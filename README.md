@@ -1,38 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+# Origin Trail Challenge
+## Project requirements
+#### This project makes use of etherscan api and alchemy to view transactions and balance respectively
+so for the app to function properly we need to have the apikey for etherscan and projectid for alchemy
+
+### Env file
+
+#### This project makes use of two `env variables` 
+1. NEXT_PUBLIC_API_KEY
+2. NEXT_PUBLIC_PROJECT_ID
+
+#### Rename the `example.env` file to `.env` and put the required apikey and project id
+
+#### For the purpose of this project, you can use this test keys.
+
+The first for the api key and the second for the project id
+1. `1NG6KRSJXKTDIEQG9U6YUJM2G51B28TXY41`
+2. `Mgq9vjmhi9Y09Zpr8KVXiktN9UIYzZAO`
+
+### How to use
+
+#### This app is relatively easy to use and straightforward, to view a transaction for Ethereum,
+#### Input the address, optionally input the start and endblock
+
+
+#### To View token amount other than Eth, input the contract address e.g. for Maker `0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2` and the address e.g. `0x4e83362442b8d1bec281594cea3050c8eb01311c`
+
+#### To view exact value of ETH that was available on the given address, input the address and select the desired date.
+
+### Side Note on the date, The Date selected should not be later than march 7, 2023. but can be earlier.
+
+#### for some reasons date later than march 7 2023 are not working, im guessing that those date have eip-1898, alchemy does not support it
+
 
 ## Getting Started
+there are two ways to achieve this:
+1. `Run locally`
 
-First, run the development server:
-
+First, install the dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+npm install
 ```
 
+#### Then start the dev server
+
+
+```bash
+npm run dev 
+```
+## VIew the app
+### view by visiting localhost:3000
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+2. `Run in a Docker environment`
+### build the container using the following
+```
+docker build -t origin .
+```
+### Running it 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```
+docker run -dp 3000:3000 origin
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### To see the app visit ip address of the vm/server:3000
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### This app has already been deployed on vercel 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Open [https://origintrail.vercel.app](https://origintrail.vercel.app) with your browser to see.
+
+
+### Some side note on the deployed website.
+#### When the user click on an individual transaction in the table, there is a serverless 
+function in place that fetches the transaction details for that hash. However, I am using vercel 
+free plan, which limit the time for how long a serverless function execute. So depending on the user's 
+connection, it may not load, if the limit of the serverless function reaches. 
+This problem doesnt occur locally.
+An easy fix would be to upgrade the vercel account.

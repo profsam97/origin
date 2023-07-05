@@ -109,6 +109,15 @@ export const useFetchEthBalance =   (onSuccess: any, onError : any) => {
             }
             }
 
-        return useMutation('fetchEthBal', handleFetchBalance, {onSuccess, onError})
+        return useMutation('fetchEthBal', handleFetchBalance, {onSuccess})
 }
 
+
+export const useGetTransactionByHash = (onSuccess: any, hash: string) => {
+    const fetchTransByHash = async () => {
+        const response = await axios.get(`${baseUrl}module=proxy&action=eth_getTransactionByHash&txhash=${hash}&apikey=${apiKey}`)
+        return response.data
+    }
+
+    return useQuery('getTransactionByHash', fetchTransByHash, {onSuccess})
+}
