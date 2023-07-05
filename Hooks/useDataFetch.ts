@@ -75,7 +75,7 @@ export const useFetchEthBalance =   (onSuccess: any, onError : any) => {
             const convertedDate = convertDateFormat(date);
             try {
                 // we convert the date to timestamp
-                const timestamp = convertDateToTimestamp(convertedDate)
+                const timestamp = convertDateToTimestamp(date);
                 const fetchBlock = await axios.get(`${baseUrl}module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${apiKey}`);
                const blockNo = fetchBlock.data.result
                 let block = ethers.utils.hexlify(Number(blockNo));

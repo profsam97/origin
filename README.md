@@ -2,7 +2,7 @@
 # Origin Trail Challenge
 ## Project requirements
 #### This project makes use of etherscan api and alchemy to view transactions and balance respectively
-so for the app to function properly we need to have the apikey for etherscan and projectid for alchemy
+so for the app to function properly, we need to have the apikey for etherscan and projectid for alchemy
 
 ### Env file
 
@@ -70,12 +70,3 @@ docker run -dp 3000:3000 origin
 ### This app has already been deployed on vercel 
 
 Open [https://origintrail.vercel.app](https://origintrail.vercel.app) with your browser to see.
-
-
-### Some side note on the deployed website.
-#### When the user click on an individual transaction in the table, there is a serverless 
-function in place that fetches the transaction details for that hash. However, I am using vercel 
-free plan, which limit the time for how long a serverless function execute. So depending on the user's 
-connection, it may not load, if the limit of the serverless function reaches. 
-This problem doesnt occur locally.
-An easy fix would be to upgrade the vercel account.
