@@ -1,5 +1,7 @@
 
 # Origin Trail Challenge
+
+### Please read the instructions, to learn how to use the app.
 ## Project requirements
 #### This project makes use of etherscan api and alchemy to view transactions and balance respectively
 so for the app to function properly, we need to have the apikey for etherscan and projectid for alchemy
