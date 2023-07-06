@@ -7,8 +7,7 @@ import {convertDateFormat, convertDateToTimestamp} from "@/helpers/utils";
 import {useContext} from "react";
 import ContextApi from "@/Store/ContextApi";
 
-const API_URL = 'https://eth-mainnet.g.alchemy.com/v2/Mgq9vjmhi9Y09Zpr8KVXiktN9UIYzZAO';
-const apikey = 'Mgq9vjmhi9Y09Zpr8KVXiktN9UIYzZAO'
+const API_URL = `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_PROJECT_ID}`;
 const apiKey = process.env.NEXT_PUBLIC_API_KEY
 
 // this function is reponsible for fetching the transactions of the provided address
@@ -75,7 +74,7 @@ export const useFetchEthBalance =   (onSuccess: any, onError : any) => {
             const convertedDate = convertDateFormat(date);
             try {
                 // we convert the date to timestamp
-                const timestamp = convertDateToTimestamp(date);
+                const timestamp = convertDateToTimestamp(convertedDate)
                 const fetchBlock = await axios.get(`${baseUrl}module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${apiKey}`);
                const blockNo = fetchBlock.data.result
                 let block = ethers.utils.hexlify(Number(blockNo));
@@ -112,7 +111,7 @@ export const useFetchEthBalance =   (onSuccess: any, onError : any) => {
         return useMutation('fetchEthBal', handleFetchBalance, {onSuccess})
 }
 
-
+// this function is used to fetch transactions by hash
 export const useGetTransactionByHash = (onSuccess: any, hash: string) => {
     const fetchTransByHash = async () => {
         const response = await axios.get(`${baseUrl}module=proxy&action=eth_getTransactionByHash&txhash=${hash}&apikey=${apiKey}`)
