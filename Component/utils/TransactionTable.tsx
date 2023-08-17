@@ -62,7 +62,10 @@ const TransactionTable: React.FC<ITransTable> = ({ isFetching, isFetchingPreviou
         }
 
     };
-
+        useEffect(() => {
+                console.log(trans.slice(0, 10))
+                console.log(trans[0], trans[10])
+        },[])
     return (
         <Paper>
             <TableContainer component={Paper} sx={{my:2, bgcolor: '#111A2E', color: '#fff',

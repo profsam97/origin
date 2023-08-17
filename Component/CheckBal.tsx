@@ -50,6 +50,7 @@ const CheckBal : React.FC = () => {
               setIsError(true)
               return
           }
+
         handleUpdateBalance(data)
         // if everything goes well we reset the input field
         resetBal()
@@ -68,6 +69,7 @@ const CheckBal : React.FC = () => {
 
     const onBalSubmit : SubmitHandler<IBalance> = async (data) => {
         setIsError(false)
+        setErrorMessage('')
         postAddDate(data)
         handleUpdateBalance(null)
     }
@@ -81,7 +83,6 @@ const CheckBal : React.FC = () => {
 
         return (
                 <Container maxWidth={'lg'} component={'main'}>
-
                     <Stack spacing={2} my={3}>
                     <Typography variant={'body1'}>
                         ETH Account Balance Checker

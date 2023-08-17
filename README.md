@@ -1,5 +1,5 @@
 
-# Origin Trail Challenge
+# Transaction Explorer
 
 ### Please read the instructions, to learn how to use the app.
 ## Project requirements
