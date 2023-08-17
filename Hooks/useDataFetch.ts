@@ -38,6 +38,7 @@ export function useInfiniteFetch(onSuccess : any, data: IAddress) {
     return useInfiniteQuery(['transactions'],
         ({pageParam = 1}) => fetchTransactions(pageParam),
         {
+            //we define the logic for fetching the next and previous pages
             getNextPageParam: (lastPage) => {
                 const nextPage =  page + 1;
                 return lastPage?.length !== 0 ? nextPage : undefined
@@ -78,6 +79,7 @@ export const useFetchEthBalance =   (onSuccess: any, onError : any) => {
                 const fetchBlock = await axios.get(`${baseUrl}module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${apiKey}`);
                const blockNo = fetchBlock.data.result
                 let block = ethers.utils.hexlify(Number(blockNo));
+               // convert the number into hexadecimal representation
                 //for some reasons date later than march 7 2023 are not working, im guessing that those date have eip-1898, and
                 //alchemy does not support it
                 let data = JSON.stringify({

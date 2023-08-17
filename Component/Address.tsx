@@ -57,9 +57,11 @@ const Address : React.FC = () => {
         if (Number(status) === 0) {
             setIsError(true)
             setErrorMessage(data?.pages[0].result)
-            return
+            return // we return, so that the rest of the page doesnt get executed
         }
+
         const tableData = data?.pages.flatMap((page : TransResult) => page.result) ?? [];
+        //we transform and flatten the pages array which is a nested array
        const length = tableData.length
         const newTable = tableData.slice(length-10, length)
         handleUpdateTransaction(newTable, false)
@@ -87,6 +89,8 @@ const Address : React.FC = () => {
         handleUpdateTransaction([], true)
         //we set the error to false
         setIsError(false)
+       // we set error message to ''
+       setErrorMessage('')
         const newData = {
                 address,
                 startBlock,
@@ -106,7 +110,7 @@ const Address : React.FC = () => {
             <Container maxWidth={'lg'} component={'main'}>
                 <Stack spacing={2}>
                     <Typography variant={'body1'}>
-                        The Ethereum Transactions Explorer
+                               The Ethereum Transactions Explorer
                     </Typography>
                     <Box
                             component="form"
