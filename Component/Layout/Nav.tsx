@@ -38,7 +38,7 @@ function ResponsiveAppBar() {
         <AppBar elevation={1} position="sticky" sx={{bgcolor: '#fff', color: '#808080 '}}>
             <Container maxWidth="lg">
                 <Toolbar disableGutters>
-                    {!isMobile &&  <Avatar sx={{width:'200px',  height:'50px'}} src={'/assets/img/originlogo.png'} />}
+                    {/*{!isMobile &&  <Avatar sx={{width:'200px',  height:'50px'}} src={'/assets/img/originlogo.png'} />}*/}
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
